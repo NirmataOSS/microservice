@@ -18,3 +18,5 @@
 *.war
 
 *.MF
+
+.project
