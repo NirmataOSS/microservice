@@ -1,6 +1,6 @@
 FROM nirmata/tomcat8-custom
 MAINTAINER Nirmata "support@nirmata.com"
-
+    
 ENV JAVA_OPTS  -Dport.http.nonssl=80
 
 RUN chmod 755 /usr/local/bin/run
