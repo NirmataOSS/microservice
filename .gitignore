@@ -20,3 +20,5 @@
 *.MF
 
 .project
+/build/
+/bin/
