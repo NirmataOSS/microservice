@@ -6,24 +6,30 @@ package com.nirmata.mservice;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 
 @Path("/info")
 public class GetServiceInfo {
 
+    Logger _logger = LoggerFactory.getLogger(getClass());
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getInfo() {
 
-        ResponseBuilder bldr = Response.status(HttpServletResponse.SC_OK);
+        ResponseBuilder bldr = Response.status(Response.Status.OK);
         bldr.type(MediaType.APPLICATION_JSON);
 
         try {
@@ -38,29 +44,57 @@ public class GetServiceInfo {
     private String toJson() throws IOException {
         Map<String, Object> response = Maps.newHashMap();
 
-        String name = System.getenv("NIRMATA_SERVICE_NAME");
+        String name = getEnv("NIRMATA_SERVICE_NAME", "service");
         response.put("name", name);
 
-        String environment = System.getenv("NIRMATA_ENVIRONMENT_NAME");
+        String environment = getEnv("NIRMATA_ENVIRONMENT_NAME", "environment");
         response.put("environment", environment);
 
-        String application = System.getenv("NIRMATA_APPLICATION_NAME");
+        String application = getEnv("NIRMATA_APPLICATION_NAME", "application");
         response.put("application", application);
 
-        String version = System.getenv("NIRMATA_SERVICE_VERSION");
+        String version = getEnv("NIRMATA_SERVICE_VERSION", "version");
         response.put("version", version);
 
         String hostName = InetAddress.getLocalHost().getHostName();
         response.put("host", hostName);
 
-        String hostAddr = System.getenv("NIRMATA_HOST_ADDRESS");
+        String hostAddr = getEnv("NIRMATA_HOST_ADDRESS", "hostaddress");
         response.put("address", hostAddr);
+
+        String hostPort = getHostPort();
+        response.put("port", hostPort);
 
         String containerAddr = InetAddress.getLocalHost().getHostAddress();
         response.put("containerAddress", containerAddr);
-        
+
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(response);
         return json;
+    }
+
+    private String getEnv(String name, String defaultVal) {
+        String val = System.getenv(name);
+        return (val == null) ? defaultVal : val;
+    }
+
+    private String getHostPort() {
+        String portList = System.getenv("NIRMATA_SERVICE_PORTS");
+        if (portList == null) {
+            return null;
+        }
+
+        List<String> portEntries = Splitter.on(',').splitToList(portList);
+        for (String entry : portEntries) {
+            List<String> vals = Splitter.on(':').splitToList(entry);
+            String type = vals.get(0);
+            String hostPort = vals.get(1);
+            String containerPort = vals.get(2);
+
+            _logger.debug("Got port value {}:{}:{}", type, hostPort, containerPort);
+            return hostPort;
+        }
+
+        return null;
     }
 }

@@ -5,10 +5,8 @@
 package com.nirmata.mservice;
 
 import java.io.*;
-import java.sql.Date;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -40,16 +38,20 @@ public class LocateService {
         _logger.debug("Got data: {}", jsonData);
 
         String name = (String) jsonData.get("name");
-        String service = name.substring(0, name.indexOf("."));
+        int nameIndex = name.indexOf(".");
+        if (nameIndex == -1) {
+            nameIndex = name.length();
+        }
+
+        String service = name.substring(0, nameIndex);
         _logger.debug("Target service: {}", service);
 
         DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpGet getRequest = new HttpGet(
-            "http://" + name + "/" + service + "/api/info");
+        HttpGet getRequest = new HttpGet("http://" + name + "/" + service + "/api/info");
         getRequest.addHeader("accept", "application/json");
 
         _logger.debug("Executing request {}", getRequest);
-        
+
         long start = System.currentTimeMillis();
         HttpResponse response = httpClient.execute(getRequest);
         long end = System.currentTimeMillis();
@@ -69,7 +71,7 @@ public class LocateService {
 
         String responseString = mapper.writeValueAsString(responseData);
 
-        ResponseBuilder bldr = Response.status(HttpServletResponse.SC_OK);
+        ResponseBuilder bldr = Response.status(Response.Status.OK);
         bldr.type(MediaType.APPLICATION_JSON);
         bldr.entity(responseString);
         return bldr.build();
