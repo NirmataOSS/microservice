@@ -47,7 +47,8 @@ public class LocateService {
         _logger.debug("Target service: {}", service);
 
         DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpGet getRequest = new HttpGet("http://" + name + "/" + service + "/api/info");
+        // HttpGet getRequest = new HttpGet("http://" + name + "/" + service + "/api/info");
+        HttpGet getRequest = new HttpGet("http://" + name + "/api/info");
         getRequest.addHeader("accept", "application/json");
 
         _logger.debug("Executing request {}", getRequest);
