@@ -30,7 +30,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/orders"
+					"route": "/orders",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -74,7 +75,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/customer"
+					"route": "/customer",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -114,7 +116,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/catalog"
+					"route": "/catalog",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -191,7 +194,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/deals"
+					"route": "/deals",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -231,7 +235,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/loyalty"
+					"route": "/loyalty",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -275,7 +280,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/payment"
+					"route": "/payment",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -315,7 +321,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/ratings"
+					"route": "/ratings",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -359,7 +366,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/recommendations"
+					"route": "/recommendations",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -409,7 +417,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/wishlist"
+					"route": "/wishlist",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
@@ -456,7 +465,8 @@
 			"gatewayRoutes": [
 				{
 					"type": "urlRoute",
-					"route": "/shopui"
+					"route": "/shopui",
+					"targetUrl": "/service"
 				}
 			],
 			"containerType": [],
