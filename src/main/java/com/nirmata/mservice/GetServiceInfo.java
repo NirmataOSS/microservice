@@ -62,8 +62,9 @@ public class GetServiceInfo {
         String hostAddr = getEnv("NIRMATA_HOST_ADDRESS", "hostaddress");
         response.put("address", hostAddr);
 
-        String hostPort = getHostPort();
-        response.put("port", hostPort);
+        String[] ports = getHostPort();
+        response.put("port", ports[0]);
+        response.put("containerPort", ports[1]);
 
         String containerAddr = InetAddress.getLocalHost().getHostAddress();
         response.put("containerAddress", containerAddr);

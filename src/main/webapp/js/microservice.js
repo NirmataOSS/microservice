@@ -23,10 +23,17 @@ var TheView = Backbone.View.extend({
 		var data = {name: serviceName};
 		var jqxhr = jQuery.post("api/locate", JSON.stringify(data), null, "json");
 		jqxhr.done(function(data) {
-			console.debug("Got data " + JSON.stringify(data));
-			var name = data.name + "." + data.application + ".local";
-			var address = data.address + ":" + data.port;
-			results.append('<p class="text-success">Service Address: ' + address + '</p>');
+			console.debug("Got data " + JSON.stringify(data));			
+			var hostAddress = data.address;
+			if (data.port && data.port != "0") {
+				hostAddress += ":" + data.port;
+			}
+
+			results.append('<p class="text-success">Host Address: ' + address + '</p>');
+
+			var containerAddress = data.containerAddress + data.containerPort;
+			results.append('<p class="text-success">Container Address: ' + containerAddress + '</p>');
+
 			console.log("Response time (ms): " + data.responseTime);
 		});
 
