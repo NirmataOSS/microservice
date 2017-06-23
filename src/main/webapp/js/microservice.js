@@ -29,10 +29,9 @@ var TheView = Backbone.View.extend({
 				hostAddress += ":" + data.port;
 			}
 
-			results.append('<p class="text-success">Host Address: ' + address + '</p>');
-
-			var containerAddress = data.containerAddress + data.containerPort;
-			results.append('<p class="text-success">Container Address: ' + containerAddress + '</p>');
+			var containerAddress = data.containerAddress + ":" + data.containerPort;
+			results.append('<p class="text-success" style="margin-top: 10px">Container: ' + containerAddress + '</p>');
+			results.append('<p class="text-success">&nbsp;&nbsp;On Host: ' + hostAddress + '</p>');
 
 			console.log("Response time (ms): " + data.responseTime);
 		});
@@ -44,6 +43,12 @@ var TheView = Backbone.View.extend({
 	},
 
 	render: function() {
+
+		var url = window.location.href;
+		if (!url.endsWith("/")) {
+			url += "/"
+			window.location.replace(url);
+		}
 
 		var view = this;
 		var jqxhr = jQuery.getJSON("api/info");

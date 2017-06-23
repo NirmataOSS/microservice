@@ -47,7 +47,6 @@ public class LocateService {
         _logger.debug("Target service: {}", service);
 
         DefaultHttpClient httpClient = new DefaultHttpClient();
-        // HttpGet getRequest = new HttpGet("http://" + name + "/" + service + "/api/info");
         HttpGet getRequest = new HttpGet("http://" + name + "/service/api/info");
         getRequest.addHeader("accept", "application/json");
 
@@ -61,12 +60,15 @@ public class LocateService {
             throw new RuntimeException("Failed : HTTP error code : "
                 + response.getStatusLine().getStatusCode());
         }
+
         long time = (end-start);
+        _logger.debug("Got response in {}ms", time);
 
         BufferedReader reader = new BufferedReader(
             new InputStreamReader((response.getEntity().getContent())));
 
-        Map<String, Object> responseData = mapper.readValue(reader, new TypeReference<Map<String, Object>>() {
+        Map<String, Object> responseData = mapper.readValue(reader, 
+            new TypeReference<Map<String, Object>>() {
         });
         responseData.put("responseTime", time);
 

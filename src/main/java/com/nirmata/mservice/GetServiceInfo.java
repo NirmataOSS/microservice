@@ -34,6 +34,8 @@ public class GetServiceInfo {
 
         try {
             String json = toJson();
+            _logger.debug("Sending response: {}", json);
+
             bldr.entity(json);
             return bldr.build();
         } catch (Throwable t) {
@@ -79,7 +81,7 @@ public class GetServiceInfo {
         return (val == null) ? defaultVal : val;
     }
 
-    private String getHostPort() {
+    private String[] getHostPort() {
         String portList = System.getenv("NIRMATA_SERVICE_PORTS");
         if (portList == null) {
             return null;
@@ -93,7 +95,10 @@ public class GetServiceInfo {
             String containerPort = vals.get(2);
 
             _logger.debug("Got port value {}:{}:{}", type, hostPort, containerPort);
-            return hostPort;
+            return new String[] {
+                hostPort,
+                containerPort
+            };
         }
 
         return null;
