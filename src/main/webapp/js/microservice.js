@@ -51,6 +51,11 @@ var TheView = Backbone.View.extend({
 
 	        document.title = data.name;
 
+			data.serviceAddress = data.address;
+			if (data.port && (data.port != 0 || data.port != "0") {
+				data.serviceAddress += ":" + data.port;
+			}
+
 			var html = [];
 			html.push('<div class="center-block" style="width: 350px; padding-top: 18px">');
 			
@@ -88,7 +93,7 @@ var serviceDataTemplate = _.template(
 </div> \
 <div class="col-md-12" style="text-align: center;"> \
     <p style="font-size: 20px; margin: 5px"><%= name %>.<%= application %>.local</p> \
-    <p style="font-size: 20px; margin: 5px"><%= address %>:<%= port %></p> \
+    <p style="font-size: 20px; margin: 5px"><%= serviceAddress %></p> \
 </div>');
 
 var locateTemplate = _.template(
