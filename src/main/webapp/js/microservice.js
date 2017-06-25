@@ -52,7 +52,7 @@ var TheView = Backbone.View.extend({
 	        document.title = data.name;
 
 			data.serviceAddress = data.address;
-			if (data.port && (data.port != 0 || data.port != "0") {
+			if (data.port && (data.port != 0 || data.port != "0")) {
 				data.serviceAddress += ":" + data.port;
 			}
 
