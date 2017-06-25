@@ -12,8 +12,10 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,14 +48,24 @@ public class LocateService {
         String service = name.substring(0, nameIndex);
         _logger.debug("Target service: {}", service);
 
-        DefaultHttpClient httpClient = new DefaultHttpClient();
+
+        RequestConfig requestConfig = RequestConfig.custom()
+            .setConnectionRequestTimeout(10 * 1000)
+            .setConnectTimeout(10 * 1000)
+            .setSocketTimeout(10 * 1000)
+            .build();
+
+        HttpClient client = HttpClientBuilder.create()
+            .setDefaultRequestConfig(requestConfig)
+            .build();
+
         HttpGet getRequest = new HttpGet("http://" + name + "/service/api/info");
         getRequest.addHeader("accept", "application/json");
 
         _logger.debug("Executing request {}", getRequest);
 
         long start = System.currentTimeMillis();
-        HttpResponse response = httpClient.execute(getRequest);
+        HttpResponse response = client.execute(getRequest);
         long end = System.currentTimeMillis();
 
         if (response.getStatusLine().getStatusCode() != 200) {
