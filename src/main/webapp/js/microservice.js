@@ -89,7 +89,7 @@ var TheView = Backbone.View.extend({
 
 var serviceDataTemplate = _.template(
 '<div class="col-md-12" style="text-align: center; height: 100px"> \
-    <span class="glyphicon glyphicon-cloud" style="color: green; font-size: 128px; margin: 0px"></span> \
+    <span class="glyphicon glyphicon-cloud" style="color: blue; font-size: 128px; margin: 0px"></span> \
 </div> \
 <div class="col-md-12" style="text-align: center;"> \
     <p style="font-size: 20px; margin: 5px"><%= name %>.<%= application %>.local</p> \
