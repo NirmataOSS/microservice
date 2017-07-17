@@ -27,20 +27,16 @@ public class GetServiceInfo {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getInfo() {
+    public Response getInfo() throws IOException {
 
         ResponseBuilder bldr = Response.status(Response.Status.OK);
         bldr.type(MediaType.APPLICATION_JSON);
 
-        try {
-            String json = toJson();
-            _logger.debug("Sending response: {}", json);
+        String json = toJson();
+        _logger.debug("Sending response: {}", json);
 
-            bldr.entity(json);
-            return bldr.build();
-        } catch (Throwable t) {
-            return Response.serverError().build();
-        }
+        bldr.entity(json);
+        return bldr.build();
     }
 
     private String toJson() throws IOException {
@@ -55,21 +51,28 @@ public class GetServiceInfo {
         String application = getEnv("NIRMATA_APPLICATION_NAME", "application");
         response.put("application", application);
 
-        String version = getEnv("NIRMATA_SERVICE_VERSION", "version");
+        String version = getEnv("NIRMATA_SERVICE_VERSION", "");
         response.put("version", version);
 
         String hostName = InetAddress.getLocalHost().getHostName();
         response.put("host", hostName);
 
-        String hostAddr = getEnv("NIRMATA_HOST_ADDRESS", "hostaddress");
-        response.put("address", hostAddr);
+        String hostAddr = getEnv("NIRMATA_HOST_ADDRESS", "");
+        if (hostAddr != "") {
+            response.put("address", hostAddr);
+        }
 
         String[] ports = getHostPort();
-        response.put("port", ports[0]);
-        response.put("containerPort", ports[1]);
+        if (ports != null && ports.length == 2) {
+            response.put("port", ports[0]);
+            response.put("containerPort", ports[1]);
+        }
 
         String containerAddr = InetAddress.getLocalHost().getHostAddress();
         response.put("containerAddress", containerAddr);
+        if (hostAddr == "") {
+            response.put("address", containerAddr);
+        }
 
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(response);
