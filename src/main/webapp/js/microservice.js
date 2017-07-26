@@ -29,7 +29,11 @@ var TheView = Backbone.View.extend({
 				hostAddress += ":" + data.port;
 			}
 
-			var containerAddress = data.containerAddress + ":" + data.containerPort;
+			var containerAddress = data.containerAddress;
+			if (data.containerPort && data.containerPort != "0") {
+				containerAddress += ":" + data.containerPort;
+			}
+
 			results.append('<p class="text-success" style="margin-top: 10px">Container: ' + containerAddress + '</p>');
 			results.append('<p class="text-success">On Host: ' + hostAddress + '</p>');
 

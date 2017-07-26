@@ -42,7 +42,11 @@ public class GetServiceInfo {
     private String toJson() throws IOException {
         Map<String, Object> response = Maps.newHashMap();
 
-        String name = getEnv("NIRMATA_SERVICE_NAME", "service");
+        String name = getEnv("NIRMATA_SERVICE_NAME", "");
+        if (name.isEmpty()) {
+            name = getEnv("NIRMATA_DESIRED_SERVICE_NAME", "service");
+        }
+
         response.put("name", name);
 
         String environment = getEnv("NIRMATA_ENVIRONMENT_NAME", "environment");
